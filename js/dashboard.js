@@ -193,4 +193,3 @@ function calculate() {
         resultOutput.innerText = resultValue;
     }
 }
-

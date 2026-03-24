@@ -109,6 +109,9 @@ body {
 .form-section {
   padding: 40px;
   width: 55%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .form-header {
@@ -129,6 +132,7 @@ body {
 .tabs {
   display: flex;
   margin-bottom: 30px;
+  align-items: stretch;
 }
 
 .tabs button {
