@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Quantity Measurement Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">Dark</button>
+
+        <div class="hero">
+            <div class="hero-text">
+                <p class="eyebrow">Quantity Suite</p>
+                <h1 class="title">Measurement Dashboard</h1>
+                <p class="subtitle">Compare, convert, or compute across units with instant feedback.</p>
+            </div>
+            <div class="meta-cards">
+                <div class="meta-card" id="meta-type">
+                    <span class="meta-label">Active Type</span>
+                    <span class="meta-value" id="active-type">Length</span>
+                </div>
+                <div class="meta-card" id="meta-action">
+                    <span class="meta-label">Active Action</span>
+                    <span class="meta-value" id="active-action">Comparison</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Selection</h2>
+                    <p>Pick what you want to measure and how you want to work.</p>
+                </div>
+
+                <!-- TYPE -->
+                <div class="selection-group">
+                    <h6>CHOOSE TYPE</h6>
+                    <div class="btn-group" id="type-group">
+                        <button class="btn" onclick="selectType(this, 'length')">Length</button>
+                        <button class="btn" onclick="selectType(this, 'weight')">Weight</button>
+                        <button class="btn" onclick="selectType(this, 'temp')">Temperature</button>
+                        <button class="btn" onclick="selectType(this, 'volume')">Volume</button>
+                    </div>
+                </div>
+
+                <!-- ACTION -->
+                <div class="selection-group">
+                    <h6>CHOOSE ACTION</h6>
+                    <div class="btn-group" id="action-group">
+                        <button class="btn active" onclick="setAction(this, 'compare')">Comparison</button>
+                        <button class="btn" onclick="setAction(this, 'convert')">Conversion</button>
+                        <button class="btn" onclick="setAction(this, 'arithmetic')">Arithmetic</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Calculator</h2>
+                    <p>Enter values to compute instantly.</p>
+                </div>
+
+                <!-- INPUT -->
+                <div class="input-section">
+                    <div class="input-group">
+                        <input type="number" id="value1" class="form-control" placeholder="Value 1">
+                        <select id="unit1" class="form-control-unit"></select>
+                    </div>
+                    <button class="action-btn" id="action-symbol">+</button>
+                    <div class="input-group">
+                        <input type="number" id="value2" class="form-control" placeholder="Value 2">
+                        <select id="unit2" class="form-control-unit"></select>
+                    </div>
+                </div>
+
+                <!-- RESULT -->
+                <div class="result-section">
+                    <h5>Result:</h5>
+                    <h3 id="result">0</h3>
+                    <div id="result-unit-wrapper" style="display: none;">
+                        <select id="result-unit" class="form-control-unit"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>

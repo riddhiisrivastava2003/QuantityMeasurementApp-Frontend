@@ -10,27 +10,67 @@
 <body>
   <div class="container">
     <div class="card">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">Dark</button>
       <div class="image-section">
         <img src="assets/images/quantity.png" alt="Quantity Measurement">
         <p>Quantity Measurement</p>
+        <div class="info-cards">
+          <div class="info-card">
+            <span>Fast</span>
+            <small>Instant results</small>
+          </div>
+          <div class="info-card">
+            <span>Accurate</span>
+            <small>Reliable units</small>
+          </div>
+          <div class="info-card">
+            <span>Simple</span>
+            <small>Clean workflow</small>
+          </div>
+        </div>
       </div>
       <div class="form-section">
+        <div class="form-header">
+          <h2>Welcome Back</h2>
+          <p>Sign in to continue or create a new account in seconds.</p>
+        </div>
         <div class="tabs">
           <button id="loginTab">LOGIN</button>
           <button id="signupTab" class="active">SIGNUP</button>
         </div>
-        <form id="signupForm">
-          <input type="text" placeholder="Full Name" required>
-          <input type="email" placeholder="Email Id" required>
-          <input type="password" placeholder="Password" required>
-          <input type="text" placeholder="Mobile Number" required>
-          <button type="submit">Signup</button>
-        </form>
-        <form id="loginForm" style="display:none;">
-          <input type="email" placeholder="Email Id" required>
-          <input type="password" placeholder="Password" required>
-          <button type="submit">Login</button>
-        </form>
+        <div class="form-card">
+          <form id="signupForm">
+            <div class="field">
+              <label>Full Name</label>
+              <input type="text" placeholder="Enter full name" required>
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input type="email" placeholder="Enter email" required>
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input type="password" placeholder="Create password" required>
+            </div>
+            <div class="field">
+              <label>Mobile Number</label>
+              <input type="text" placeholder="Enter number" required>
+            </div>
+            <button type="submit">Signup</button>
+          </form>
+          <form id="loginForm" style="display:none;">
+            <div class="field">
+              <label>Email</label>
+              <input type="email" placeholder="Enter email" required>
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input type="password" placeholder="Enter password" required>
+            </div>
+            <button type="submit">Login</button>
+          </form>
+        </div>
+        <p class="form-footnote">By continuing, you agree to the app usage terms.</p>
       </div>
     </div>
   </div>
