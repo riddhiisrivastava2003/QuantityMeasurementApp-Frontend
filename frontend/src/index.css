@@ -1,0 +1,92 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #f7f2ea;
+  --panel: #fffdf9;
+  --panel-accent: #fef3e4;
+  --text-strong: #1f2a2e;
+  --text: #3e4b55;
+  --text-muted: #7a8791;
+  --border: rgba(31, 42, 46, 0.12);
+  --accent: #e66b4e;
+  --accent-soft: rgba(230, 107, 78, 0.2);
+  --shadow-soft: 0 24px 60px -40px rgba(31, 42, 46, 0.5);
+
+  --display: 'Fraunces', serif;
+  --body: 'Space Grotesk', sans-serif;
+
+  font: 16px/1.6 var(--body);
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #fff 0%, #f7f2ea 45%, #f0e9df 100%);
+}
+
+[data-theme='dark'] {
+  --bg: #111517;
+  --panel: #171c1f;
+  --panel-accent: #1f262b;
+  --text-strong: #f3f4f6;
+  --text: #c7cdd2;
+  --text-muted: #9aa3aa;
+  --border: rgba(255, 255, 255, 0.08);
+  --accent: #f08b73;
+  --accent-soft: rgba(240, 139, 115, 0.2);
+  --shadow-soft: 0 24px 60px -40px rgba(0, 0, 0, 0.8);
+}
+
+[data-theme='dark'] body {
+  background: radial-gradient(circle at top, #1b2126 0%, #111517 55%, #0d1113 100%);
+}
+
+#root {
+  min-height: 100svh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  color: var(--text-strong);
+  letter-spacing: -0.5px;
+}
+
+h1 {
+  font-size: clamp(32px, 4vw, 54px);
+}
+
+h2 {
+  font-size: clamp(24px, 3vw, 36px);
+}
+
+h3 {
+  font-size: 20px;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: var(--body);
+}
+
+input,
+select,
+textarea {
+  font-family: var(--body);
+}
