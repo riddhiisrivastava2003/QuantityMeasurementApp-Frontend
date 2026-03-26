@@ -1,376 +1,386 @@
-﻿import { useEffect, useMemo, useState } from 'react'
-
-const UNITS = {
-  length: {
-    base: 'meter',
-    meter: 1,
-    kilometer: 1000,
-    centimeter: 0.01,
-    inch: 0.0254,
-    feet: 0.3048,
-  },
-  weight: {
-    base: 'gram',
-    gram: 1,
-    kilogram: 1000,
-    tonne: 1000000,
-  },
-  temp: {
-    base: 'celsius',
-    celsius: 1,
-    fahrenheit: 1,
-  },
-  volume: {
-    base: 'litre',
-    litre: 1,
-    millilitre: 0.001,
-    gallon: 3.78541,
-  },
-}
-
-const ACTION_LABELS = {
-  compare: 'Comparison',
-  convert: 'Conversion',
-  arithmetic: 'Arithmetic',
-}
-
-const UNIT_LABELS = {
-  meter: 'm',
-  kilometer: 'km',
-  centimeter: 'cm',
-  inch: 'in',
-  feet: 'ft',
-  gram: 'g',
-  kilogram: 'kg',
-  tonne: 't',
-  celsius: '°C',
-  fahrenheit: '°F',
-  litre: 'L',
-  millilitre: 'mL',
-  gallon: 'gal',
-}
-
-const PRECISION_BY_TYPE = {
-  length: 2,
-  weight: 2,
-  temp: 1,
-  volume: 2,
-}
-
-const ARITHMETIC_LABELS = {
-  add: 'Add',
-  subtract: 'Subtract',
-  multiply: 'Multiply',
-}
-
-function convertToBase(value, unit, type) {
-  if (type === 'temp' && unit !== UNITS[type].base) {
-    if (unit === 'fahrenheit') return (value - 32) * (5 / 9)
-  }
-  return value * UNITS[type][unit]
-}
-
-function convertFromBase(value, unit, type) {
-  if (type === 'temp' && unit !== UNITS[type].base) {
-    if (unit === 'fahrenheit') return value * (9 / 5) + 32
-  }
-  return value / UNITS[type][unit]
-}
+﻿import { useState, useEffect } from "react";
 
 function Dashboard() {
-  const [theme, setTheme] = useState('light')
-  const [currentAction, setCurrentAction] = useState('compare')
-  const [currentType, setCurrentType] = useState('length')
-  const [arithmeticOp, setArithmeticOp] = useState('add')
-  const [value1, setValue1] = useState('')
-  const [value2, setValue2] = useState('')
-  const [unit1, setUnit1] = useState('meter')
-  const [unit2, setUnit2] = useState('meter')
-  const [resultUnit, setResultUnit] = useState('meter')
-  const [result, setResult] = useState('0')
-  const [precision, setPrecision] = useState(PRECISION_BY_TYPE.length)
+  const [action, setAction] = useState("convert");
+  const [type, setType] = useState("length");
+  const [value1, setValue1] = useState("");
+  const [value2, setValue2] = useState("");
+  const [unit1, setUnit1] = useState("meter");
+  const [unit2, setUnit2] = useState("meter");
+  const [resultUnit, setResultUnit] = useState("meter");
+  const [result, setResult] = useState("");
+  const [precision, setPrecision] = useState(2);
+  const [darkMode, setDarkMode] = useState(false);
 
-  const unitOptions = useMemo(
-    () => Object.keys(UNITS[currentType]).filter((unit) => unit !== 'base'),
-    [currentType],
-  )
-
+  // Load theme preference
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme')
-    const prefersDark =
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    const nextTheme = storedTheme || (prefersDark ? 'dark' : 'light')
-    setTheme(nextTheme)
-  }, [])
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('theme', theme)
-  }, [theme])
-
-  useEffect(() => {
-    const defaultUnit = UNITS[currentType].base
-    setUnit1(defaultUnit)
-    setUnit2(defaultUnit)
-    setResultUnit(defaultUnit)
-    setPrecision(PRECISION_BY_TYPE[currentType])
-  }, [currentType])
-
-  useEffect(() => {
-    const v1 = parseFloat(value1) || 0
-    const v2 = parseFloat(value2) || 0
-
-    const baseV1 = convertToBase(v1, unit1, currentType)
-    const baseV2 = convertToBase(v2, unit2, currentType)
-
-    let nextResult
-    if (currentAction === 'arithmetic') {
-      let raw = baseV1 + baseV2
-      if (arithmeticOp === 'subtract') raw = baseV1 - baseV2
-      if (arithmeticOp === 'multiply') raw = baseV1 * baseV2
-      nextResult = convertFromBase(raw, resultUnit, currentType)
-    } else if (currentAction === 'compare') {
-      nextResult = baseV1 === baseV2 ? 'Equal' : 'Not Equal'
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setDarkMode(savedTheme === 'dark');
     } else {
-      nextResult = convertFromBase(baseV1, resultUnit, currentType)
+      setDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
     }
+  }, []);
 
-    if (typeof nextResult === 'number') {
-      setResult(nextResult.toFixed(precision))
-    } else {
-      setResult(nextResult)
+  // Apply theme
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
+
+  const units = {
+    length: { meter:1, kilometer:1000, centimeter:0.01, millimeter:0.001, inch:0.0254, feet:0.3048, yard:0.9144, mile:1609.34 },
+    weight: { gram:1, kilogram:1000, tonne:1000000, pound:453.592, ounce:28.3495 },
+    temperature: { celsius:1, fahrenheit:1, kelvin:1 },
+    volume: { litre:1, millilitre:0.001, gallon:3.78541, quart:0.946353, pint:0.473176 },
+    area: { square_meter:1, square_kilometer:1000000, square_centimeter:0.0001, square_feet:0.092903, acre:4046.86, hectare:10000 }
+  };
+
+  const unitLabels = {
+    meter:"m", kilometer:"km", centimeter:"cm", millimeter:"mm",
+    inch:"in", feet:"ft", yard:"yd", mile:"mi",
+    gram:"g", kilogram:"kg", tonne:"t", pound:"lb", ounce:"oz",
+    celsius:"°C", fahrenheit:"°F", kelvin:"K",
+    litre:"L", millilitre:"mL", gallon:"gal", quart:"qt", pint:"pt",
+    square_meter:"m²", square_kilometer:"km²", square_centimeter:"cm²", square_feet:"ft²", acre:"ac", hectare:"ha"
+  };
+
+  const convertToBase = (v,u)=>{
+    if(type==="temperature"){
+      if(u==="fahrenheit") return (v-32)*5/9;
+      if(u==="kelvin") return v-273.15;
+      return v;
     }
-  }, [
-    currentAction,
-    currentType,
-    arithmeticOp,
-    value1,
-    value2,
-    unit1,
-    unit2,
-    resultUnit,
-    precision,
-  ])
+    return v * units[type][u];
+  };
 
-  const actionLabel = ACTION_LABELS[currentAction]
-  const typeLabel = {
-    length: 'Length',
-    weight: 'Weight',
-    temp: 'Temperature',
-    volume: 'Volume',
-  }[currentType]
+  const convertFromBase = (v,u)=>{
+    if(type==="temperature"){
+      if(u==="fahrenheit") return (v*9/5)+32;
+      if(u==="kelvin") return v+273.15;
+      return v;
+    }
+    return v / units[type][u];
+  };
 
-  const actionSymbol =
-    currentAction === 'arithmetic'
-      ? arithmeticOp === 'add'
-        ? '+'
-        : arithmeticOp === 'subtract'
-          ? '−'
-          : '×'
-      : currentAction === 'convert'
-        ? '→'
-        : '=='
+  useEffect(()=>{
+    let v1=parseFloat(value1)||0;
+    let v2=parseFloat(value2)||0;
 
-  const showSecondValue = currentAction !== 'convert'
-  const showResultUnit = currentAction !== 'compare'
-  const resultUnitLabel = UNIT_LABELS[resultUnit] || resultUnit
+    let b1=convertToBase(v1,unit1);
+    let b2=convertToBase(v2,unit2);
+
+    let res;
+
+    if(action==="add") res=convertFromBase(b1+b2,resultUnit);
+    else if(action==="subtract") res=convertFromBase(b1-b2,resultUnit);
+    else if(action==="multiply") res=convertFromBase(b1*b2,resultUnit);
+    else if(action==="divide") res=b2!==0?convertFromBase(b1/b2,resultUnit):"Error";
+    else if(action==="compare") res=b1>b2?"Greater":b1<b2?"Less":"Equal";
+    else res=convertFromBase(b1,resultUnit);
+
+    setResult(typeof res==="number"?res.toFixed(precision):res);
+
+  },[value1,value2,unit1,unit2,resultUnit,action,type,precision]);
+
+  useEffect(()=>{
+    const u=Object.keys(units[type])[0];
+    setUnit1(u); setUnit2(u); setResultUnit(u);
+  },[type]);
+
+  const unitOptions = Object.keys(units[type]);
+
+  const typeOptions = [
+    { value: "length", label: "Length", icon: "📏" },
+    { value: "weight", label: "Weight", icon: "⚖️" },
+    { value: "temperature", label: "Temperature", icon: "🌡️" },
+    { value: "volume", label: "Volume", icon: "🧪" },
+    { value: "area", label: "Area", icon: "📐" },
+  ];
+
+  const actionOptions = [
+    { value: "convert", label: "Convert", icon: "🔄" },
+    { value: "add", label: "Add", icon: "+" },
+    { value: "subtract", label: "Subtract", icon: "−" },
+    { value: "multiply", label: "Multiply", icon: "×" },
+    { value: "divide", label: "Divide", icon: "÷" },
+    { value: "compare", label: "Compare", icon: "⚖️" },
+  ];
+
+  const showSecondValue = !["convert"].includes(action);
 
   return (
-    <section className="dashboard dashboard-page">
-      <div className="container">
-        <div className="card">
-          <button
-            className="theme-toggle"
-            type="button"
-            onClick={() =>
-              setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
-            }
-            aria-label="Toggle dark mode"
-          >
-            {theme === 'dark' ? 'Light' : 'Dark'}
-          </button>
+    <div className="dashboard-container">
+      <div className="dashboard-header">
+        <div className="header-content">
+          <h1>Measurement Calculator</h1>
+          <p>Professional unit conversion and calculation tool</p>
+        </div>
+        <button
+          className="theme-toggle"
+          onClick={() => setDarkMode(!darkMode)}
+          title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        >
+          {darkMode ? "☀️" : "🌙"}
+        </button>
+      </div>
 
-          <div className="hero">
-            <div className="hero-text">
-              <p className="eyebrow">Quantity Suite</p>
-              <h1 className="title">Measurement Dashboard</h1>
-              <p className="subtitle">
-                Compare, convert, or compute across units with instant feedback.
-              </p>
+      <div className="dashboard-layout">
+        {/* Sidebar */}
+        <div className="dashboard-sidebar">
+          {/* Type Selection */}
+          <div className="sidebar-card">
+            <div className="card-header">
+              <span className="card-icon">📊</span>
+              <h3>Measurement Type</h3>
             </div>
-            <div className="meta-cards">
-              <div className="meta-card pulse" key={currentType}>
-                <span className="meta-label">Active Type</span>
-                <span className="meta-value">{typeLabel}</span>
-              </div>
-              <div className="meta-card pulse" key={currentAction}>
-                <span className="meta-label">Active Action</span>
-                <span className="meta-value">{actionLabel}</span>
-              </div>
+            <div className="card-content">
+              {typeOptions.map((option) => (
+                <button
+                  key={option.value}
+                  className={`option-btn ${type === option.value ? 'active' : ''}`}
+                  onClick={() => setType(option.value)}
+                >
+                  <span className="btn-icon">{option.icon}</span>
+                  <span className="btn-text">{option.label}</span>
+                </button>
+              ))}
             </div>
           </div>
 
-          <div className="main-grid">
-            <div className="panel">
-              <div className="panel-header">
-                <h2>Selection</h2>
-                <p>Pick what you want to measure and how you want to work.</p>
-              </div>
-
-              <div className="selection-group">
-                <h6>CHOOSE TYPE</h6>
-                <div className="btn-group">
-                  {['length', 'weight', 'temp', 'volume'].map((type) => (
-                    <button
-                      key={type}
-                      className={`btn ${currentType === type ? 'active' : ''}`}
-                      type="button"
-                      onClick={() => setCurrentType(type)}
-                    >
-                      {type === 'temp' ? 'Temperature' : type}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="selection-group">
-                <h6>CHOOSE ACTION</h6>
-                <div className="btn-group">
-                  {['compare', 'convert', 'arithmetic'].map((action) => (
-                    <button
-                      key={action}
-                      className={`btn ${currentAction === action ? 'active' : ''}`}
-                      type="button"
-                      onClick={() => setCurrentAction(action)}
-                    >
-                      {ACTION_LABELS[action]}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {currentAction === 'arithmetic' && (
-                <div className="selection-group">
-                  <h6>ARITHMETIC MODE</h6>
-                  <div className="btn-group">
-                    {['add', 'subtract', 'multiply'].map((mode) => (
-                      <button
-                        key={mode}
-                        className={`btn ${arithmeticOp === mode ? 'active' : ''}`}
-                        type="button"
-                        onClick={() => setArithmeticOp(mode)}
-                      >
-                        {ARITHMETIC_LABELS[mode]}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="selection-group">
-                <h6>PRECISION</h6>
-                <div className="btn-group">
-                  {[0, 1, 2, 3, 4].map((digits) => (
-                    <button
-                      key={digits}
-                      className={`btn ${precision === digits ? 'active' : ''}`}
-                      type="button"
-                      onClick={() => setPrecision(digits)}
-                    >
-                      {digits} dp
-                    </button>
-                  ))}
-                </div>
-              </div>
+          {/* Action Selection */}
+          <div className="sidebar-card">
+            <div className="card-header">
+              <span className="card-icon">⚙️</span>
+              <h3>Operation</h3>
             </div>
-
-            <div className="panel">
-              <div className="panel-header">
-                <h2>Calculator</h2>
-                <p>Enter values to compute instantly.</p>
-              </div>
-
-              <div className="input-section">
-                <div className="input-group">
-                  <input
-                    type="number"
-                    className="form-control"
-                    placeholder="Value 1"
-                    value={value1}
-                    onChange={(event) => setValue1(event.target.value)}
-                  />
-                  <select
-                    className="form-control-unit"
-                    value={unit1}
-                    onChange={(event) => setUnit1(event.target.value)}
-                  >
-                    {unitOptions.map((unit) => (
-                      <option key={unit} value={unit}>
-                        {unit}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <button className="action-btn" type="button">
-                  {actionSymbol}
+            <div className="card-content">
+              {actionOptions.map((option) => (
+                <button
+                  key={option.value}
+                  className={`option-btn ${action === option.value ? 'active' : ''}`}
+                  onClick={() => setAction(option.value)}
+                >
+                  <span className="btn-icon">{option.icon}</span>
+                  <span className="btn-text">{option.label}</span>
                 </button>
+              ))}
+            </div>
+          </div>
 
-                {showSecondValue && (
-                  <div className="input-group">
-                    <input
-                      type="number"
-                      className="form-control"
-                      placeholder="Value 2"
-                      value={value2}
-                      onChange={(event) => setValue2(event.target.value)}
-                    />
-                    <select
-                      className="form-control-unit"
-                      value={unit2}
-                      onChange={(event) => setUnit2(event.target.value)}
-                    >
-                      {unitOptions.map((unit) => (
-                        <option key={unit} value={unit}>
-                          {unit}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-              </div>
-
-              <div className="result-section">
-                <h5>Result:</h5>
-                <h3>
-                  {result}
-                  {showResultUnit && (
-                    <span className="unit-label"> {resultUnitLabel}</span>
-                  )}
-                </h3>
-                {showResultUnit && (
-                  <div className="result-unit-wrapper">
-                    <select
-                      className="form-control-unit"
-                      value={resultUnit}
-                      onChange={(event) => setResultUnit(event.target.value)}
-                    >
-                      {unitOptions.map((unit) => (
-                        <option key={unit} value={unit}>
-                          {unit}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
+          {/* Settings */}
+          <div className="sidebar-card">
+            <div className="card-header">
+              <span className="card-icon">🎛️</span>
+              <h3>Settings</h3>
+            </div>
+            <div className="card-content">
+              <div className="setting-group">
+                <label className="setting-label">Decimal Places</label>
+                <select
+                  value={precision}
+                  onChange={(e) => setPrecision(Number(e.target.value))}
+                  className="setting-select"
+                >
+                  {[0, 1, 2, 3, 4, 5, 6].map((p) => (
+                    <option key={p} value={p}>{p}</option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Main Content */}
+        <div className="dashboard-main">
+          {/* Calculator Card */}
+          <div className="main-card calculator-card">
+            <div className="card-header">
+              <span className="card-icon">🧮</span>
+              <h3>Calculator</h3>
+              <div className="current-selection">
+                <span className="selection-badge">
+                  {typeOptions.find(t => t.value === type)?.icon} {typeOptions.find(t => t.value === type)?.label}
+                </span>
+                <span className="selection-badge">
+                  {actionOptions.find(a => a.value === action)?.icon} {actionOptions.find(a => a.value === action)?.label}
+                </span>
+              </div>
+            </div>
+
+            <div className="calculator-content">
+              <div className="input-section">
+                <div className="input-row">
+                  <div className="input-field">
+                    <label className="input-label">Value 1</label>
+                    <div className="input-wrapper">
+                      <input
+                        type="number"
+                        value={value1}
+                        onChange={(e) => setValue1(e.target.value)}
+                        placeholder="0"
+                        className="value-input"
+                      />
+                      <select
+                        value={unit1}
+                        onChange={(e) => setUnit1(e.target.value)}
+                        className="unit-select"
+                      >
+                        {unitOptions.map((unit) => (
+                          <option key={unit} value={unit}>
+                            {unitLabels[unit] || unit}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {showSecondValue && (
+                    <>
+                      <div className="operator-display">
+                        <div className="operator-badge">
+                          {action === "add" && "+"}
+                          {action === "subtract" && "−"}
+                          {action === "multiply" && "×"}
+                          {action === "divide" && "÷"}
+                          {action === "compare" && "="}
+                        </div>
+                      </div>
+
+                      <div className="input-field">
+                        <label className="input-label">Value 2</label>
+                        <div className="input-wrapper">
+                          <input
+                            type="number"
+                            value={value2}
+                            onChange={(e) => setValue2(e.target.value)}
+                            placeholder="0"
+                            className="value-input"
+                          />
+                          <select
+                            value={unit2}
+                            onChange={(e) => setUnit2(e.target.value)}
+                            className="unit-select"
+                          >
+                            {unitOptions.map((unit) => (
+                              <option key={unit} value={unit}>
+                                {unitLabels[unit] || unit}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Result Unit Selection */}
+                {["convert", "add", "subtract", "multiply", "divide"].includes(action) && (
+                  <div className="result-unit-section">
+                    <label className="input-label">Result in</label>
+                    <select
+                      value={resultUnit}
+                      onChange={(e) => setResultUnit(e.target.value)}
+                      className="result-unit-select"
+                    >
+                      {unitOptions.map((unit) => (
+                        <option key={unit} value={unit}>
+                          {unit} ({unitLabels[unit] || unit})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
+
+              {/* Result Display */}
+              <div className="result-display-section">
+                <div className="result-container">
+                  <div className="result-label">Result</div>
+                  <div className="result-value-display">
+                    <span className="result-number">
+                      {result || "—"}
+                    </span>
+                    {result && !isNaN(result) && (
+                      <span className="result-unit-display">
+                        {unitLabels[resultUnit] || resultUnit}
+                      </span>
+                    )}
+                  </div>
+                  {result === "Cannot divide by zero" && (
+                    <div className="error-message">
+                      <span className="error-icon">⚠️</span>
+                      Cannot divide by zero
+                    </div>
+                  )}
+                  {result === "Greater" && <div className="comparison-result greater">Value 1 is Greater</div>}
+                  {result === "Less" && <div className="comparison-result less">Value 1 is Less</div>}
+                  {result === "Equal" && <div className="comparison-result equal">Values are Equal</div>}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="main-card actions-card">
+            <div className="card-header">
+              <span className="card-icon">🚀</span>
+              <h3>Quick Actions</h3>
+            </div>
+            <div className="quick-actions-grid">
+              <button
+                className="quick-action-btn"
+                onClick={() => {
+                  setValue1("");
+                  setValue2("");
+                  setResult("");
+                }}
+              >
+                <span className="action-icon">🗑️</span>
+                <span className="action-text">Clear All</span>
+              </button>
+              <button
+                className="quick-action-btn"
+                onClick={() => {
+                  const temp = value1;
+                  setValue1(value2);
+                  setValue2(temp);
+                }}
+              >
+                <span className="action-icon">🔄</span>
+                <span className="action-text">Swap Values</span>
+              </button>
+              <button
+                className="quick-action-btn"
+                onClick={() => {
+                  if (result) {
+                    navigator.clipboard?.writeText(result);
+                  }
+                }}
+              >
+                <span className="action-icon">📋</span>
+                <span className="action-text">Copy Result</span>
+              </button>
+              <button
+                className="quick-action-btn"
+                onClick={() => {
+                  // Reset to defaults
+                  setType("length");
+                  setAction("convert");
+                  setValue1("");
+                  setValue2("");
+                  setResult("");
+                }}
+              >
+                <span className="action-icon">🔄</span>
+                <span className="action-text">Reset</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
-  )
+    </div>
+  );
 }
 
-export default Dashboard
+export default Dashboard;
