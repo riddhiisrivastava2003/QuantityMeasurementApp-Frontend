@@ -91,20 +91,20 @@ function Dashboard() {
   const unitOptions = Object.keys(units[type]);
 
   const typeOptions = [
-    { value: "length", label: "Length", icon: "📏" },
-    { value: "weight", label: "Weight", icon: "⚖️" },
-    { value: "temperature", label: "Temperature", icon: "🌡️" },
-    { value: "volume", label: "Volume", icon: "🧪" },
-    { value: "area", label: "Area", icon: "📐" },
+    { value: "length", label: "Length", icon: "straighten" },
+    { value: "weight", label: "Weight", icon: "scale" },
+    { value: "temperature", label: "Temperature", icon: "thermostat" },
+    { value: "volume", label: "Volume", icon: "science" },
+    { value: "area", label: "Area", icon: "crop_square" },
   ];
 
   const actionOptions = [
-    { value: "convert", label: "Convert", icon: "🔄" },
-    { value: "add", label: "Add", icon: "+" },
-    { value: "subtract", label: "Subtract", icon: "−" },
-    { value: "multiply", label: "Multiply", icon: "×" },
-    { value: "divide", label: "Divide", icon: "÷" },
-    { value: "compare", label: "Compare", icon: "⚖️" },
+    { value: "convert", label: "Convert", icon: "transform" },
+    { value: "add", label: "Add", icon: "add" },
+    { value: "subtract", label: "Subtract", icon: "remove" },
+    { value: "multiply", label: "Multiply", icon: "close" },
+    { value: "divide", label: "Divide", icon: "horizontal_rule" },
+    { value: "compare", label: "Compare", icon: "balance" },
   ];
 
   const showSecondValue = !["convert"].includes(action);
@@ -113,15 +113,15 @@ function Dashboard() {
     <div className="dashboard-container">
       <div className="dashboard-header">
         <div className="header-content">
-          <h1>Measurement Calculator</h1>
-          <p>Professional unit conversion and calculation tool</p>
+          <h1>Unit Converter</h1>
+          <p>Professional measurement conversion and calculation tool</p>
         </div>
         <button
           className="theme-toggle"
           onClick={() => setDarkMode(!darkMode)}
           title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
         >
-          {darkMode ? "☀️" : "🌙"}
+          <span className="theme-icon">{darkMode ? "light_mode" : "dark_mode"}</span>
         </button>
       </div>
 
@@ -131,7 +131,7 @@ function Dashboard() {
           {/* Type Selection */}
           <div className="sidebar-card">
             <div className="card-header">
-              <span className="card-icon">📊</span>
+              <span className="card-icon">category</span>
               <h3>Measurement Type</h3>
             </div>
             <div className="card-content">
@@ -151,7 +151,7 @@ function Dashboard() {
           {/* Action Selection */}
           <div className="sidebar-card">
             <div className="card-header">
-              <span className="card-icon">⚙️</span>
+              <span className="card-icon">settings</span>
               <h3>Operation</h3>
             </div>
             <div className="card-content">
@@ -171,7 +171,7 @@ function Dashboard() {
           {/* Settings */}
           <div className="sidebar-card">
             <div className="card-header">
-              <span className="card-icon">🎛️</span>
+              <span className="card-icon">tune</span>
               <h3>Settings</h3>
             </div>
             <div className="card-content">
@@ -196,7 +196,7 @@ function Dashboard() {
           {/* Calculator Card */}
           <div className="main-card calculator-card">
             <div className="card-header">
-              <span className="card-icon">🧮</span>
+              <span className="card-icon">calculate</span>
               <h3>Calculator</h3>
               <div className="current-selection">
                 <span className="selection-badge">
@@ -309,7 +309,7 @@ function Dashboard() {
                   </div>
                   {result === "Cannot divide by zero" && (
                     <div className="error-message">
-                      <span className="error-icon">⚠️</span>
+                      <span className="error-icon">error</span>
                       Cannot divide by zero
                     </div>
                   )}
@@ -324,7 +324,7 @@ function Dashboard() {
           {/* Quick Actions */}
           <div className="main-card actions-card">
             <div className="card-header">
-              <span className="card-icon">🚀</span>
+              <span className="card-icon">bolt</span>
               <h3>Quick Actions</h3>
             </div>
             <div className="quick-actions-grid">
@@ -336,7 +336,7 @@ function Dashboard() {
                   setResult("");
                 }}
               >
-                <span className="action-icon">🗑️</span>
+                <span className="action-icon">clear</span>
                 <span className="action-text">Clear All</span>
               </button>
               <button
@@ -347,7 +347,7 @@ function Dashboard() {
                   setValue2(temp);
                 }}
               >
-                <span className="action-icon">🔄</span>
+                <span className="action-icon">swap_horiz</span>
                 <span className="action-text">Swap Values</span>
               </button>
               <button
@@ -358,7 +358,7 @@ function Dashboard() {
                   }
                 }}
               >
-                <span className="action-icon">📋</span>
+                <span className="action-icon">content_copy</span>
                 <span className="action-text">Copy Result</span>
               </button>
               <button
@@ -372,7 +372,7 @@ function Dashboard() {
                   setResult("");
                 }}
               >
-                <span className="action-icon">🔄</span>
+                <span className="action-icon">refresh</span>
                 <span className="action-text">Reset</span>
               </button>
             </div>
