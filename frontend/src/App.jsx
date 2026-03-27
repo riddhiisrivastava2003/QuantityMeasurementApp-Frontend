@@ -12,13 +12,27 @@ function App() {
         
         {/* HEADER */}
         <header className="topbar">
-          <h2>QuantityMeasure</h2>
+          <div className="navbar-brand">
+            <h2>Quantity Measurement</h2>
+          </div>
 
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Signup</Link>
-            <Link to="/dashboard">Dashboard</Link>
+          <nav className="navbar-menu">
+            <Link to="/" className="nav-link">
+              <span className="nav-icon">🏠</span>
+              Home
+            </Link>
+            <Link to="/login" className="nav-link">
+              <span className="nav-icon">🔐</span>
+              Login
+            </Link>
+            <Link to="/signup" className="nav-link">
+              <span className="nav-icon">✍️</span>
+              Signup
+            </Link>
+            <Link to="/dashboard" className="nav-link">
+              <span className="nav-icon">📊</span>
+              Dashboard
+            </Link>
           </nav>
         </header>
 
