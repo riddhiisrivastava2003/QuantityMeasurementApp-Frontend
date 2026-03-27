@@ -168,27 +168,7 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Settings */}
-          <div className="sidebar-card">
-            <div className="card-header">
-              <span className="card-icon">tune</span>
-              <h3>Settings</h3>
-            </div>
-            <div className="card-content">
-              <div className="setting-group">
-                <label className="setting-label">Decimal Places</label>
-                <select
-                  value={precision}
-                  onChange={(e) => setPrecision(Number(e.target.value))}
-                  className="setting-select"
-                >
-                  {[0, 1, 2, 3, 4, 5, 6].map((p) => (
-                    <option key={p} value={p}>{p}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
+
         </div>
 
         {/* Main Content */}
