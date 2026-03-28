@@ -7,6 +7,7 @@ function Home() {
         <div className="hero-content">
           <div className="hero-text">
             <h1>Professional Unit Converter</h1>
+            
             <p>Accurate measurement conversions for engineering, science, and everyday use. Convert between length, weight, temperature, volume, and area units with precision and ease.</p>
 
             <div className="hero-features">

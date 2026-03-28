@@ -94,7 +94,7 @@ function Signup({ onLogin }) {
           <span>or</span>
         </div>
 
-//         {/* ✅ GOOGLE SIGNUP */}
+        {/* ✅ GOOGLE SIGNUP */}
         <div style={{ display: "flex", justifyContent: "center" }}>
           <GoogleLogin
             onSuccess={(credentialResponse) => {
