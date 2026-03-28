@@ -13,6 +13,7 @@ const activeTypeLabel = document.getElementById("active-type");
 const activeActionLabel = document.getElementById("active-action");
 const metaTypeCard = document.getElementById("meta-type");
 const metaActionCard = document.getElementById("meta-action");
+const logoutButton = document.getElementById("logoutButton");
 
 const units = {
     length: {
@@ -71,6 +72,12 @@ if (themeToggle) {
     themeToggle.addEventListener('click', () => {
         const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         setTheme(next);
+    });
+}
+
+if (logoutButton) {
+    logoutButton.addEventListener('click', () => {
+        window.location.href = "index.html";
     });
 }
 

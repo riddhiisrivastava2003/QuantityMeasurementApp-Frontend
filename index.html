@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <body>
   <div class="container">
     <div class="card">
@@ -60,10 +61,12 @@
             <div class="divider" role="presentation">
               <span>Or</span>
             </div>
-            <button class="google-button" type="button" aria-label="Sign up with Google">
-              <span class="google-icon" aria-hidden="true">G</span>
-              Continue with Google
-            </button>
+          <div id="g_id_onload"
+                 data-client_id="110405843624-sotbcfgc7qgcp7ahebjdn8uh70buj388.apps.googleusercontent.com"
+                     data-callback="handleCredentialResponse">
+                </div>
+
+            <div class="g_id_signin"></div>
           </form>
           <form id="loginForm" style="display:none;">
             <div class="field">
