@@ -1,4 +1,6 @@
-﻿import { Link, useNavigate } from 'react-router-dom';
+﻿import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+import { Link, useNavigate } from 'react-router-dom';
 
 function Signup({ onLogin }) {
   const navigate = useNavigate();
@@ -92,19 +94,106 @@ function Signup({ onLogin }) {
           <span>or</span>
         </div>
 
-        <div className="auth-social">
-          <button className="btn-social google">
-            <span className="social-icon">G</span>
-            Sign up with Google
-          </button>
+//         {/* ✅ GOOGLE SIGNUP */}
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              const decoded = jwtDecode(credentialResponse.credential);
+
+              console.log("User:", decoded);
+
+              // store user
+              localStorage.setItem("user", JSON.stringify(decoded));
+
+              onLogin();
+              navigate('/dashboard');
+            }}
+            onError={() => {
+              console.log('Signup Failed');
+            }}
+          />
         </div>
 
-        <div className="auth-footer">
+         <div className="auth-footer">
           <p>Already have an account? <Link to="/login" className="auth-link">Sign in</Link></p>
         </div>
-      </div>
-    </div>
+       </div>
+     </div>
   );
 }
 
 export default Signup;
+
+
+
+
+
+// import { GoogleLogin } from '@react-oauth/google';
+// import { jwtDecode } from "jwt-decode";
+// import { Link, useNavigate } from 'react-router-dom';
+
+// function Signup({ onLogin }) {
+//   const navigate = useNavigate();
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     onLogin();
+//     navigate('/dashboard');
+//   };
+
+//   return (
+//     <div className="auth-container">
+//       <div className="auth-card">
+
+//         <div className="auth-header">
+//           <h2>Create Account</h2>
+//           <p>Join us to start converting units professionally</p>
+//         </div>
+
+//         {/* NORMAL SIGNUP */}
+//         <form className="auth-form" onSubmit={handleSubmit}>
+//           <input type="text" placeholder="Full Name" required />
+//           <input type="email" placeholder="Email" required />
+//           <input type="password" placeholder="Password" required />
+//           <input type="password" placeholder="Confirm Password" required />
+
+//           <button type="submit">Create Account</button>
+//         </form>
+
+//         <div className="auth-divider">
+//           <span>or</span>
+//         </div>
+
+//         {/* ✅ GOOGLE SIGNUP */}
+//         <div style={{ display: "flex", justifyContent: "center" }}>
+//           <GoogleLogin
+//             onSuccess={(credentialResponse) => {
+//               const decoded = jwtDecode(credentialResponse.credential);
+
+//               console.log("User:", decoded);
+
+//               // store user
+//               localStorage.setItem("user", JSON.stringify(decoded));
+
+//               onLogin();
+//               navigate('/dashboard');
+//             }}
+//             onError={() => {
+//               console.log('Signup Failed');
+//             }}
+//           />
+//         </div>
+
+//         <div className="auth-footer">
+//           <p>
+//             Already have an account?{" "}
+//             <Link to="/login">Sign in</Link>
+//           </p>
+//         </div>
+
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Signup;
