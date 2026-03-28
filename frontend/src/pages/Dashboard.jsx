@@ -10,23 +10,6 @@ function Dashboard() {
   const [resultUnit, setResultUnit] = useState("meter");
   const [result, setResult] = useState("");
   const [precision, setPrecision] = useState(2);
-  const [darkMode, setDarkMode] = useState(false);
-
-  // Load theme preference
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setDarkMode(savedTheme === 'dark');
-    } else {
-      setDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches);
-    }
-  }, []);
-
-  // Apply theme
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
-  }, [darkMode]);
 
   const units = {
     length: { meter:1, kilometer:1000, centimeter:0.01, millimeter:0.001, inch:0.0254, feet:0.3048, yard:0.9144, mile:1609.34 },
@@ -116,13 +99,6 @@ function Dashboard() {
           <h1>Unit Converter</h1>
           <p>Professional measurement conversion and calculation tool</p>
         </div>
-        <button
-          className="theme-toggle"
-          onClick={() => setDarkMode(!darkMode)}
-          title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-        >
-          <span className="theme-icon">{darkMode ? "light_mode" : "dark_mode"}</span>
-        </button>
       </div>
 
       <div className="dashboard-layout">

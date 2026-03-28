@@ -1,6 +1,15 @@
-﻿import { Link } from 'react-router-dom';
+﻿import { Link, useNavigate } from 'react-router-dom';
 
-function Signup() {
+function Signup({ onLogin }) {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Simulate signup - in real app, create account
+    onLogin();
+    navigate('/dashboard');
+  };
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -12,7 +21,7 @@ function Signup() {
           <p>Join us to start converting units professionally</p>
         </div>
 
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label">Full Name</label>
             <div className="input-wrapper">

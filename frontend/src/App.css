@@ -4,7 +4,55 @@
 
 /* CSS Variables for Theming */
 :root {
-  /* Dark Theme as Default */
+  /* Professional Light Theme */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #e2e8f0;
+  --bg-card: #ffffff;
+  --bg-sidebar: #f1f5f9;
+  --bg-input: #ffffff;
+  --bg-button: #4adeb7;
+  --bg-button-hover: #22c55e;
+  --bg-button-active: linear-gradient(135deg, #4adeb7 0%, #22c55e 100%);
+  --bg-result: linear-gradient(135deg, #4adeb7 0%, #22c55e 100%);
+  --bg-error: rgba(220, 38, 38, 0.1);
+  --bg-comparison-greater: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  --bg-comparison-less: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  --bg-comparison-equal: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-button: #ffffff;
+  --text-button-active: #ffffff;
+  --text-result: #ffffff;
+  --text-error: #dc2626;
+  --text-comparison-greater: #ffffff;
+  --text-comparison-less: #ffffff;
+  --text-comparison-equal: #ffffff;
+
+  --border-primary: #e2e8f0;
+  --border-secondary: #cbd5e1;
+  --border-focus: #4adeb7;
+  --border-button: #4adeb7;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+}
+
+/* Dark Theme */
+.dark {
   --bg-primary: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   --bg-secondary: #1e293b;
   --bg-tertiary: #334155;
@@ -13,10 +61,10 @@
   --bg-input: #334155;
   --bg-button: #334155;
   --bg-button-hover: #475569;
-  --bg-button-active: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  --bg-result: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --bg-button-active: linear-gradient(135deg, #4adeb7 0%, #22c55e 100%);
+  --bg-result: linear-gradient(135deg, #4adeb7 0%, #22c55e 100%);
   --bg-error: rgba(220, 38, 38, 0.1);
-  --bg-comparison-greater: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  --bg-comparison-greater: linear-gradient(135deg, #4adeb7 0%, #22c55e 100%);
   --bg-comparison-less: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
   --bg-comparison-equal: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
 
@@ -33,7 +81,7 @@
 
   --border-primary: rgba(255, 255, 255, 0.1);
   --border-secondary: rgba(255, 255, 255, 0.15);
-  --border-focus: #10b981;
+  --border-focus: #4adeb7;
   --border-button: rgba(255, 255, 255, 0.1);
 
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -237,11 +285,11 @@ body {
 }
 
 .nav-link:hover {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #4adeb7 0%, #22c55e 100%);
   color: white;
-  border-color: #10b981;
+  border-color: #4adeb7;
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 6px 16px rgba(74, 222, 183, 0.3);
 }
 
 .nav-link:hover::before {
@@ -260,6 +308,43 @@ body {
 }
 
 .nav-link:hover .nav-icon {
+  transform: scale(1.2) rotate(10deg);
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: transparent;
+  border: 2px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-toggle:hover {
+  background: linear-gradient(135deg, #4adeb7 0%, #22c55e 100%);
+  color: white;
+  border-color: #4adeb7;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(74, 222, 183, 0.3);
+}
+
+.theme-icon {
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  transition: transform var(--transition-fast);
+}
+
+.theme-toggle:hover .theme-icon {
   transform: scale(1.2) rotate(10deg);
 }
 
@@ -286,6 +371,15 @@ body {
   }
 
   .nav-icon {
+    font-size: 0.95rem;
+  }
+
+  .theme-toggle {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .theme-icon {
     font-size: 0.95rem;
   }
 }
@@ -1017,9 +1111,9 @@ button:focus {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #4adeb7 0%, #22c55e 100%);
   color: white;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 15px rgba(74, 222, 183, 0.3);
   position: relative;
   overflow: hidden;
   transition: all var(--transition-fast);
@@ -1174,7 +1268,7 @@ button:focus {
   justify-content: center;
   width: 4rem;
   height: 4rem;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #4adeb7 0%, #22c55e 100%);
   border-radius: 50%;
   margin-bottom: 1rem;
   color: white;
@@ -1282,9 +1376,9 @@ button:focus {
 }
 
 .checkbox-label input[type="checkbox"]:checked + .checkmark {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  border-color: #10b981;
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+  background: linear-gradient(135deg, #4adeb7 0%, #22c55e 100%);
+  border-color: #4adeb7;
+  box-shadow: 0 0 12px rgba(74, 222, 183, 0.3);
   animation: scaleIn 0.3s ease-out;
 }
 
@@ -1308,7 +1402,7 @@ button:focus {
 }
 
 .forgot-link:hover {
-  color: #10b981;
+  color: #4adeb7;
 }
 
 .auth-submit {
@@ -1410,7 +1504,7 @@ button:focus {
 }
 
 .auth-link {
-  color: #10b981;
+  color: #4adeb7;
   text-decoration: none;
   font-weight: 600;
   transition: color var(--transition-fast);

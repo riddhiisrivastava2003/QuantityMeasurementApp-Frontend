@@ -1,6 +1,15 @@
-﻿import { Link } from 'react-router-dom';
+﻿import { Link, useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({ onLogin }) {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Simulate login - in real app, validate credentials
+    onLogin();
+    navigate('/dashboard');
+  };
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -12,7 +21,7 @@ function Login() {
           <p>Sign in to your account to continue</p>
         </div>
 
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label">Email Address</label>
             <div className="input-wrapper">
