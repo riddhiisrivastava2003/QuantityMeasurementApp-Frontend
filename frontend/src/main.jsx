@@ -6,7 +6,7 @@ import './index.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <GoogleOAuthProvider clientId="Client_id">
+  <GoogleOAuthProvider clientId="YOUR_REAL_CLIENT_ID">
     <App />
   </GoogleOAuthProvider>
 );
