@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = '/api'
+const BASE_URL = 'https://api-gateway-p6i7.onrender.com/api'
 
 const api = axios.create({
   baseURL: BASE_URL,

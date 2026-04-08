@@ -33,10 +33,13 @@ export default function LoginPage() {
     }
   }
 
-  const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:8082/oauth2/authorization/google'
-  }
+  // const handleGoogleLogin = () => {
+    //window.location.href = 'http://localhost:8082/oauth2/authorization/google'
+  //}
 
+  const handleGoogleLogin = () => {
+  window.location.href = 'https://auth-production-abc.up.railway.app/oauth2/authorization/google'
+}
   return (
     <div className="min-h-screen flex hero-bg bg-[var(--bg-primary)]">
       {/* Left panel — branding */}
