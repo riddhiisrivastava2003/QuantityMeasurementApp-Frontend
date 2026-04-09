@@ -1,8 +1,117 @@
+// import axios from 'axios'
+
+// // Use env var for easy switching between deployments
+// // Set VITE_API_BASE_URL in Vercel environment variables
+// const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api-gateway-p6i7.onrender.com/api'
+
+// const api = axios.create({
+//   baseURL: BASE_URL,
+//   headers: { 'Content-Type': 'application/json' },
+//   timeout: 30000, // increased from 10s to 30s — Render free tier can be slow to wake up
+// })
+
+// api.interceptors.request.use((config) => {
+//   const token = localStorage.getItem('qma_token')
+//   if (token) config.headers.Authorization = `Bearer ${token}`
+//   return config
+// })
+
+// api.interceptors.response.use(
+//   res => res,
+//   err => {
+//     if (err.response?.status === 401) localStorage.removeItem('qma_token')
+//     return Promise.reject(err)
+//   }
+// )
+
+// // ── Auth ────────────────────────────────────────────────────────────────────
+// export const authAPI = {
+//   login: async (username, password) => {
+//     const res = await api.post('/auth/login', { username, password })
+//     return res.data
+//   },
+//   register: async (username, password, email) => {
+//     const res = await api.post('/auth/register', { username, password, email })
+//     return res.data
+//   },
+//   logout: async (token) => {
+//     const res = await api.post('/auth/logout', {}, {
+//       headers: { Authorization: `Bearer ${token}` }
+//     })
+//     return res.data
+//   },
+//   getProfile: async (token) => {
+//     const res = await api.get('/auth/profile', {
+//       headers: { Authorization: `Bearer ${token}` }
+//     })
+//     return res.data
+//   },
+// }
+
+// // ── Quantity / Conversion ───────────────────────────────────────────────────
+// export const quantityAPI = {
+//   convert: async ({ value, fromUnit, toUnit }) => {
+//     const res = await api.post('/quantity/convert', { value, fromUnit, toUnit })
+//     return res.data
+//   },
+//   add: async ({ value1, unit1, value2, unit2, resultUnit }) => {
+//     const res = await api.post('/quantity/arithmetic/add', { value1, unit1, value2, unit2, resultUnit })
+//     return res.data
+//   },
+//   subtract: async ({ value1, unit1, value2, unit2, resultUnit }) => {
+//     const res = await api.post('/quantity/arithmetic/subtract', { value1, unit1, value2, unit2, resultUnit })
+//     return res.data
+//   },
+//   multiply: async ({ value1, unit1, scalar }) => {
+//     const res = await api.post('/quantity/arithmetic/multiply', { value1, unit1, scalar })
+//     return res.data
+//   },
+//   divide: async ({ value1, unit1, scalar }) => {
+//     const res = await api.post('/quantity/arithmetic/divide', { value1, unit1, scalar })
+//     return res.data
+//   },
+//   compare: async ({ value1, unit1, value2, unit2 }) => {
+//     const res = await api.post('/quantity/arithmetic/compare', { value1, unit1, value2, unit2 })
+//     return res.data
+//   },
+//   getAll: async () => {
+//     const res = await api.get('/quantity/all')
+//     return res.data
+//   },
+//   health: async () => {
+//     const res = await api.get('/quantity/test')
+//     return res.data
+//   },
+// }
+
+// // ── History ─────────────────────────────────────────────────────────────────
+// export const historyAPI = {
+//   save: async (data) => {
+//     const res = await api.post('/history/save', data)
+//     return res.data
+//   },
+//   getMyHistory: async () => {
+//     const res = await api.get('/history/my')
+//     return res.data
+//   },
+//   clearHistory: async () => {
+//     const res = await api.delete('/history/clear')
+//     return res.data
+//   },
+// }
+
+// export default api
+
+
 import axios from 'axios'
 
 // Use env var for easy switching between deployments
 // Set VITE_API_BASE_URL in Vercel environment variables
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api-gateway-p6i7.onrender.com/api'
+// FIX: Strip trailing slash from env var and always append /api
+// So whether VITE_API_BASE_URL is "https://api-gateway-p6i7.onrender.com"
+// or "https://api-gateway-p6i7.onrender.com/api" — both will work correctly
+const _rawBase = (import.meta.env.VITE_API_BASE_URL || 'https://api-gateway-p6i7.onrender.com').replace(/\/$/, '')
+const BASE_URL = _rawBase.endsWith('/api') ? _rawBase : _rawBase + '/api'
 
 const api = axios.create({
   baseURL: BASE_URL,
