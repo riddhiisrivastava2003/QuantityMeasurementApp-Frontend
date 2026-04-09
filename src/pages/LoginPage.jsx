@@ -36,8 +36,9 @@ export default function LoginPage() {
 
 
   const handleGoogleLogin = () => {
-  window.location.href = 'https://auth-production-abc.up.railway.app/oauth2/authorization/google'
-}
+    const authServiceUrl = import.meta.env.VITE_AUTH_SERVICE_URL || 'https://auth-production-abc.up.railway.app'
+    window.location.href = authServiceUrl + '/oauth2/authorization/google'
+  }
   return (
     <div className="min-h-screen flex hero-bg bg-[var(--bg-primary)]">
       {/* Left panel — branding */}

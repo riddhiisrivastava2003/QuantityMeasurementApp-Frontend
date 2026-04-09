@@ -1,11 +1,13 @@
 import axios from 'axios'
 
-const BASE_URL = 'https://api-gateway-p6i7.onrender.com/api'
+// Use env var for easy switching between deployments
+// Set VITE_API_BASE_URL in Vercel environment variables
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api-gateway-p6i7.onrender.com/api'
 
 const api = axios.create({
   baseURL: BASE_URL,
   headers: { 'Content-Type': 'application/json' },
-  timeout: 10000,
+  timeout: 30000, // increased from 10s to 30s — Render free tier can be slow to wake up
 })
 
 api.interceptors.request.use((config) => {
@@ -48,47 +50,34 @@ export const authAPI = {
 
 // ── Quantity / Conversion ───────────────────────────────────────────────────
 export const quantityAPI = {
-  // Convert units (public)
   convert: async ({ value, fromUnit, toUnit }) => {
     const res = await api.post('/quantity/convert', { value, fromUnit, toUnit })
     return res.data
   },
-
-  // Arithmetic — ADD two quantities with units
   add: async ({ value1, unit1, value2, unit2, resultUnit }) => {
     const res = await api.post('/quantity/arithmetic/add', { value1, unit1, value2, unit2, resultUnit })
     return res.data
   },
-
-  // Arithmetic — SUBTRACT
   subtract: async ({ value1, unit1, value2, unit2, resultUnit }) => {
     const res = await api.post('/quantity/arithmetic/subtract', { value1, unit1, value2, unit2, resultUnit })
     return res.data
   },
-
-  // Arithmetic — MULTIPLY by scalar
   multiply: async ({ value1, unit1, scalar }) => {
     const res = await api.post('/quantity/arithmetic/multiply', { value1, unit1, scalar })
     return res.data
   },
-
-  // Arithmetic — DIVIDE by scalar
   divide: async ({ value1, unit1, scalar }) => {
     const res = await api.post('/quantity/arithmetic/divide', { value1, unit1, scalar })
     return res.data
   },
-
-  // Arithmetic — COMPARE two quantities
   compare: async ({ value1, unit1, value2, unit2 }) => {
     const res = await api.post('/quantity/arithmetic/compare', { value1, unit1, value2, unit2 })
     return res.data
   },
-
   getAll: async () => {
     const res = await api.get('/quantity/all')
     return res.data
   },
-
   health: async () => {
     const res = await api.get('/quantity/test')
     return res.data
